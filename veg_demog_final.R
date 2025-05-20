@@ -10,6 +10,7 @@ library("lubridate")
 Pathway=c("/scratch/ag42790/vegetarianPRSLipids/vegetarian_files")
 Pathway_out=c("/scratch/ag42790/vegetarianPRSLipids/vegetarian_files")
 
+#using self file because it includes both self and strict participants
 load(paste("/scratch/ag42790/vegetarianPRSLipids/vegetarian_files/","veg_excluded_data_self.RData",sep = ""))
 
 bd_pheno <- data.frame(veg_excluded_data_self)
@@ -22,8 +23,6 @@ bd_pheno$Alcohol_status_cov<- factor(bd_pheno$Alcohol_status_cov, levels = c("Ne
 bd_pheno$Physical_activity_cov <- as.factor(bd_pheno$physical_activity_standardized)
 bd_pheno$Physical_activity_cov<- factor(bd_pheno$Physical_activity_cov, levels = c("Low","Moderate","High"))
 
-
-#STRICT
 #Split into ancestry 
 EUR_data <- bd_pheno[bd_pheno$pop == "EUR", ]
 EAS_data <- bd_pheno[bd_pheno$pop == "EAS", ]
