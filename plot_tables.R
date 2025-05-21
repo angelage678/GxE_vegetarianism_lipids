@@ -1,4 +1,4 @@
-# # generating tables for plot generation (EUR and CSA interaction plots)
+# generating tables for plot generation (EUR and CSA interaction plots)
 
 '%ni%' <- Negate('%in%')
 library(plyr)
