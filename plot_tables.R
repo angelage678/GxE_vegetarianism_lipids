@@ -1,16 +1,12 @@
-# interact --mem 120gb -c 20
-# ml R/4.2.1-foss-2020b
-# R
-#################################################5e-8
+# # generating tables for plot generation (EUR and CSA interaction plots)
+
 '%ni%' <- Negate('%in%')
 library(plyr)
 library(dplyr)
 library(tidyverse)
-library(readr)
-#library(RNOmni)
+library(readr) 
 library("lubridate")
 library("survival")
-#library("survminer")
 
 Pathway=c("/scratch/ag42790/vegetarianPRSLipids/vegetarian_files/")
 Pathway_out=c("/scratch/ag42790/vegetarianPRSLipids/vegetarian_files/")
