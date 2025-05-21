@@ -1,25 +1,15 @@
-# interact --mem 120gb -c 20
-# ml R/4.2.1-foss-2020b
-# R
-#################################################5e-8
+# PGS-lipid effect analysis
+
 '%ni%' <- Negate('%in%')
 library(plyr)
 library(dplyr)
 library(tidyverse)
 library(readr)
-#library(RNOmni)
 library("lubridate")
 library("survival")
-#library("survminer")
 
-# cp /scratch/ys98038/UKB/plink2_format/COVID_19/Analyses/SNP/polypred_results/All_PRS/Fish_oil_PRS_10_12_QC_bd_pheno.txt /scratch/ys98038/UKB/plink2_format/COVID_19/Analyses/SNP/UKBiobank/Lipid_PRS/Fish_oil_PRS_10_12_QC_bd_pheno.txt 
-
-####### Change
 Pathway=c("/scratch/ag42790/vegetarianPRSLipids/vegetarian_files/")
 Pathway_out=c("/scratch/ag42790/vegetarianPRSLipids/vegetarian_files/")
-################################### ################################### 
-############################# PRS x E interaction #####################
-################################### ################################### 
 
 load("/scratch/ag42790/vegetarianPRSLipids/vegetarian_files/veg_excluded_data_strict_PRS_factorized.RData")
 load("/scratch/ag42790/vegetarianPRSLipids/vegetarian_files/veg_excluded_data_self_PRS_factorized.RData")
@@ -45,17 +35,13 @@ bd_pheno_self_SAS <- bd_pheno_self[(bd_pheno_self$pop=="CSA"), ]
 bd_pheno_self_AFR <- bd_pheno_self[(bd_pheno_self$pop=="AFR"), ]
 bd_pheno_self_EAS <- bd_pheno_self[(bd_pheno_self$pop=="EAS"), ]
 
-#Full
-############################################################################################################################################################### FULL 
+############################################################################################################################################################### FULL
+
 bd_pheno_full_tem1 = bd_pheno_full
 for (percent_num in c(33)) {
   final_res=data.frame(NA,"Total population","Vegetarian population","β","SE","P")
   write.table(final_res, file= "/scratch/ag42790/vegetarianPRSLipids/vegetarian_files/new_analyses/lipid_PGS_beta_full_120324.txt", col.names = FALSE, append = TRUE,
               row.names = F, quote = FALSE, na = "",sep='\t')
-  
-  ######  
-  
-  
   for (popul in c("EUR", "SAS", "AFR", "EAS")) {
     if (popul == c("EUR")) {
       final_res=data.frame("European",NA,NA,NA,NA,NA,NA,NA)
@@ -94,22 +80,16 @@ for (percent_num in c(33)) {
         
         bd_pheno_full=bd_pheno_full_tem1
         
-        
         if (Lipids_name %in% c(colnames(bd_pheno_full))) {
-          
-          
-          ###################################  @@@ Change @@@     ###################################  @@@ 
-          #lipids instead of CAD_events (from prev script)
+
           bd_pheno_full=bd_pheno_full %>% select(FID,e,Lipids_name, everything())
-          ########### PRS
+
           df_tem <- bd_pheno_full[colnames(bd_pheno_full)[3]]
           colnames(df_tem)[1]="PRS_lipds"
           df_tem$un_sd_PRS_lipds=df_tem$PRS_lipds
           df_tem$PRS_lipds=scale(df_tem$PRS_lipds)
           bd_pheno_full=cbind(bd_pheno_full,df_tem)
           
-          #Standardize genotypic lipid
-          # bd_pheno_strict$df_TC <- scale(bd_pheno_strict$TC_Willer_EUR_PRS)
           df_tem <- bd_pheno_full[colnames(bd_pheno_full)[2]]
           colnames(df_tem)[1]="Lipds"
           bd_pheno_full=cbind(bd_pheno_full,df_tem)
@@ -123,14 +103,11 @@ for (percent_num in c(33)) {
             bd_pheno_full$PRS_lipds_tem=ifelse(is.na(bd_pheno_full$tertile)==F & bd_pheno_full$tertile==3, "High", bd_pheno_full$PRS_lipds_tem)
             bd_pheno_full$PRS_lipds_tem=ifelse(is.na(bd_pheno_full$PRS_lipds_tem)==T, "Intermediate", bd_pheno_full$PRS_lipds_tem)
             
-            # bd_pheno_strict <- bd_pheno_strict[bd_pheno_strict$PRS_lipds_tem!="Intermediate",]
-            
             bd_pheno_full$PRS_lipds_tem <- as.factor(bd_pheno_full$PRS_lipds_tem)
             bd_pheno_full$PRS_lipds_tem<- factor(bd_pheno_full$PRS_lipds_tem, levels = c("Low","Intermediate","High"))
             
           } 
           
-          #changed this line - need as factor 
           bd_pheno_full$Strict <- as.factor(bd_pheno_full$Strict)
           bd_pheno_full$Strict<- factor(bd_pheno_full$Strict, levels = c(0,1))
           
@@ -201,16 +178,12 @@ for (percent_num in c(33)) {
 
 
 
-#Strict
 ############################################################################################################################################################### STRICT 
 bd_pheno_strict_tem1 = bd_pheno_strict
 for (percent_num in c(33)) {
   final_res=data.frame(NA,"Total population","Vegetarian population","β","SE","P")
   write.table(final_res, file= "/scratch/ag42790/vegetarianPRSLipids/vegetarian_files/new_analyses/lipid_PGS_beta_120324.txt", col.names = FALSE, append = TRUE,
               row.names = F, quote = FALSE, na = "",sep='\t')
-  
-    ######  
-    
 
       for (popul in c("EUR", "SAS", "AFR", "EAS")) {
         if (popul == c("EUR")) {
@@ -253,11 +226,8 @@ for (percent_num in c(33)) {
         
         if (Lipids_name %in% c(colnames(bd_pheno_strict))) {
           
-          
-          ###################################  @@@ Change @@@     ###################################  @@@ 
-          #lipids instead of CAD_events (from prev script)
           bd_pheno_strict=bd_pheno_strict %>% select(FID,e,Lipids_name, everything())
-          ########### PRS
+
           df_tem <- bd_pheno_strict[colnames(bd_pheno_strict)[3]]
           colnames(df_tem)[1]="PRS_lipds"
           df_tem$un_sd_PRS_lipds=df_tem$PRS_lipds
@@ -265,7 +235,6 @@ for (percent_num in c(33)) {
           bd_pheno_strict=cbind(bd_pheno_strict,df_tem)
           
           #Standardize genotypic lipid
-          # bd_pheno_strict$df_TC <- scale(bd_pheno_strict$TC_Willer_EUR_PRS)
           df_tem <- bd_pheno_strict[colnames(bd_pheno_strict)[2]]
           colnames(df_tem)[1]="Lipds"
           bd_pheno_strict=cbind(bd_pheno_strict,df_tem)
@@ -278,15 +247,11 @@ for (percent_num in c(33)) {
             bd_pheno_strict$PRS_lipds_tem=ifelse(is.na(bd_pheno_strict$tertile)==F & bd_pheno_strict$tertile==1, "Low", NA)
             bd_pheno_strict$PRS_lipds_tem=ifelse(is.na(bd_pheno_strict$tertile)==F & bd_pheno_strict$tertile==3, "High", bd_pheno_strict$PRS_lipds_tem)
             bd_pheno_strict$PRS_lipds_tem=ifelse(is.na(bd_pheno_strict$PRS_lipds_tem)==T, "Intermediate", bd_pheno_strict$PRS_lipds_tem)
-            
-            # bd_pheno_strict <- bd_pheno_strict[bd_pheno_strict$PRS_lipds_tem!="Intermediate",]
-            
             bd_pheno_strict$PRS_lipds_tem <- as.factor(bd_pheno_strict$PRS_lipds_tem)
             bd_pheno_strict$PRS_lipds_tem<- factor(bd_pheno_strict$PRS_lipds_tem, levels = c("Low","Intermediate","High"))
             
           } 
           
-          #changed this line - need as factor 
           bd_pheno_strict$Strict <- as.factor(bd_pheno_strict$Strict)
           bd_pheno_strict$Strict<- factor(bd_pheno_strict$Strict, levels = c(0,1))
           
@@ -355,16 +320,12 @@ for (percent_num in c(33)) {
 
 
 
-#Self
 ############################################################################################################################################################### SELF 
 bd_pheno_self_tem1 = bd_pheno_self
 for (percent_num in c(33)) {
   final_res=data.frame(NA,"Total population","Vegetarian population","β","SE","P")
   write.table(final_res, file= "/scratch/ag42790/vegetarianPRSLipids/vegetarian_files/new_analyses/lipid_PGS_beta_self_120324.txt", col.names = FALSE, append = TRUE,
               row.names = F, quote = FALSE, na = "",sep='\t')
-  
-  ######  
-  
   
   for (popul in c("EUR", "SAS", "AFR", "EAS")) {
     if (popul == c("EUR")) {
@@ -407,11 +368,8 @@ for (percent_num in c(33)) {
         
         if (Lipids_name %in% c(colnames(bd_pheno_self))) {
           
-          
-          ###################################  @@@ Change @@@     ###################################  @@@ 
-          #lipids instead of CAD_events (from prev script)
           bd_pheno_self=bd_pheno_self %>% select(FID,e,Lipids_name, everything())
-          ########### PRS
+
           df_tem <- bd_pheno_self[colnames(bd_pheno_self)[3]]
           colnames(df_tem)[1]="PRS_lipds"
           df_tem$un_sd_PRS_lipds=df_tem$PRS_lipds
@@ -437,7 +395,6 @@ for (percent_num in c(33)) {
             
           } 
           
-          #changed this line - need as factor 
           bd_pheno_self$Self <- as.factor(bd_pheno_self$Self)
           bd_pheno_self$Self<- factor(bd_pheno_self$Self, levels = c(0,1))
           
