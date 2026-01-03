@@ -10,9 +10,9 @@ library("lubridate")
 Pathway=c("/scratch/ag42790/vegetarianPRSLipids/vegetarian_files")
 Pathway_out=c("/scratch/ag42790/vegetarianPRSLipids/vegetarian_files")
 
-load(paste("/scratch/ag42790/vegetarianPRSLipids/vegetarian_files/","veg_excluded_data_strict.RData",sep = ""))
+load(paste("/scratch/ag42790/vegetarianPRSLipids/vegetarian_files/","veg_excluded_data_strict_PRS_factorized.RData",sep = ""))
 
-bd_pheno_strict <- data.frame(veg_excluded_data_strict)
+bd_pheno_strict <- data.frame(veg_excluded_data_strict_PRS_factorized)
 
 #factorize covariates
 bd_pheno_strict$Smoking_status_cov <- as.factor(bd_pheno_strict$smoking_standardized)
