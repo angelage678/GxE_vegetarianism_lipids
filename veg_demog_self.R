@@ -10,8 +10,12 @@ library("lubridate")
 Pathway=c("/scratch/ag42790/vegetarianPRSLipids/vegetarian_files")
 Pathway_out=c("/scratch/ag42790/vegetarianPRSLipids/vegetarian_files")
 
-load(paste("/scratch/ag42790/vegetarianPRSLipids/vegetarian_files/","veg_excluded_data_self_PRS.RData",sep = ""))
-
+load(paste("/scratch/ag42790/vegetarianPRSLipids/vegetarian_files/","veg_excluded_data_self.RData",sep = ""))
+veg_excluded_data_self_PRS <- veg_excluded_data_self[is.na(veg_excluded_data_self$TC_Graham_EUR_PRS)==F | is.na(veg_excluded_data_self$TC_Graham_AFR_PRS)==F |
+                                                       is.na(veg_excluded_data_self$TC_Graham_EAS_PRS)==F | is.na(veg_excluded_data_self$TC_Graham_SAS_PRS)==F | 
+                                                       is.na(veg_excluded_data_self$TC_Willer_EUR_PRS )==F | 
+                                                       is.na(veg_excluded_data_self$TC_Graham_no_UKB_EUR_PRS)==F | is.na(veg_excluded_data_self$TC_Graham_no_UKB_AFR_PRS)==F |
+                                                       is.na(veg_excluded_data_self$TC_Graham_no_UKB_SAS_PRS)==F ,]
 bd_pheno_self <- data.frame(veg_excluded_data_self_PRS)
 
 #factorize covariates
